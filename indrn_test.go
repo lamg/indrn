@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	_ "os"
 	"path"
 	"strings"
 	"testing"
