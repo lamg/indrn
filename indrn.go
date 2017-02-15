@@ -1,15 +1,15 @@
-// This program renames the content
-// of a directory and stores the association
-// of old and new file names, so the inverse
-// process can be executed
+/*
+  Simple file renamer.  Indrn renames the content of a directory and
+  outputs the association of old and new file names, so the inverse
+  process can be executed. */
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
 	"path"
-	"bufio"
 )
 
 func main() {
