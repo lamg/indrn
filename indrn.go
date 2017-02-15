@@ -1,11 +1,11 @@
-/*
-  Simple file renamer.  Indrn renames the content of a directory and
-  outputs the association of old and new file names, so the inverse
-  process can be executed. */
+// Simple file renamer.  Indrn renames the content of a directory and
+// outputs the association of old and new file names, so the inverse
+// process can be executed.
 package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -13,22 +13,23 @@ import (
 )
 
 func main() {
-	var e error
-	var l []string
-	if len(os.Args) == 2 {
-		l, e = readLs(os.Stdin)
+	var (
+		e    error
+		l    []string
+		base = flag.String("base", "X", "Base name")
+		r    = 0
+	)
+	flag.Parse()
+	l, e = readLs(os.Stdin)
+	if e == nil {
+		k := genLs(l, *base)
+		oR := &osRenamer{}
+		e = renLs(l, k, oR)
 		if e == nil {
-			k := genLs(l, os.Args[1])
-			oR := &osRenamer{}
-			e = renLs(l, k, oR)
-			if e == nil {
-				e = csvAssoc(os.Stdout, l, k)
-			}
+			e = csvAssoc(os.Stdout, l, k)
 		}
-	} else {
-		fmt.Fprint(os.Stderr, "Expected base name\n")
 	}
-	r := 0
+
 	if e != nil {
 		fmt.Fprintln(os.Stderr, e.Error())
 		r = 1
